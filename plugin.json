@@ -1,8 +1,8 @@
 {
-  "name": "plugin-sample-vite-svelte",
-  "author": "frostime",
+  "name": "siyuan_leave_to_lock",
+  "author": "zxkmm",
   "url": "https://github.com/siyuan-note/plugin-sample-vite-svelte",
-  "version": "0.2.8",
+  "version": "0.0.1",
   "minAppVersion": "2.10.14",
   "backends": [
     "windows",
@@ -14,12 +14,12 @@
     "desktop-window"
   ],
   "displayName": {
-    "en_US": "Plugin sample with vite and svelte",
-    "zh_CN": "插件样例 vite + svelte 版"
+    "en_US": "SiYuan Leave To Lock",
+    "zh_CN": "离开即锁"
   },
   "description": {
-    "en_US": "SiYuan plugin sample with vite and svelte",
-    "zh_CN": "使用 vite 和 svelte 开发的思源插件样例"
+    "en_US": "Lock SiYuan when you leave",
+    "zh_CN": "当你离开思源笔记时锁定思源。可设置多种监听模式和自定义延迟。"
   },
   "readme": {
     "en_US": "README.md",
@@ -27,10 +27,16 @@
   },
   "funding": {
     "custom": [
-      "https://afdian.net/a/frostime"
+      "https://github.com/zxkmm/zxkmm"
     ]
   },
   "keywords": [
-    "plugin", "sample", "插件样例"
+    "锁屏",
+    "离开",
+    "锁定",
+    "Lock",
+    "lock",
+    "Leave",
+    "leave"
   ]
 }
