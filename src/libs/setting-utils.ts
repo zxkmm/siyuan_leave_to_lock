@@ -34,6 +34,7 @@ export class SettingUtils {
                 } else {
                     this.plugin.data[this.name] = data;
                     this.save();
+                    window.location.reload();
                 }
             }
         });
@@ -134,7 +135,7 @@ export class SettingUtils {
                 let buttonElement: HTMLButtonElement = document.createElement('button');
                 buttonElement.className = "b3-button b3-button--outline fn__flex-center fn__size200";
                 buttonElement.innerText = item.button?.label ?? 'Button';
-                buttonElement.onclick = item.button?.callback ?? (() => {});
+                buttonElement.onclick = item.button?.callback ?? (() => { });
                 itemElement = buttonElement;
                 break;
         }

@@ -159,7 +159,7 @@ export default class siyuan_leave_to_lock extends Plugin {
 
     async onunload() {
         await this.settingUtils.save();
-        showMessage("Uninstalled siyuan_leave_to_lock");
+        window.location.reload();
     }
 
 
