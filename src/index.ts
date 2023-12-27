@@ -1,18 +1,6 @@
 import {
     Plugin,
     showMessage,
-    confirm,
-    Dialog,
-    Menu,
-    openTab,
-    adaptHotkey,
-    getFrontend,
-    getBackend,
-    IModel,
-    Protyle,
-    openWindow,
-    IOperation,
-    Constants
 } from "siyuan";
 import "@/index.scss";
 
@@ -84,10 +72,11 @@ export default class PluginSample extends Plugin {
                 timer = setTimeout(() => {
                     if (this.settingUtils.get("mainSwitch") && this.settingUtils.get("monitorVisibility")) {
                         this.lockSiyuan();
+                        this.sleep(1000);
                     }
 
 
-                }, this.settingUtils.get("Slider") * 1000); // 1分钟 = 60秒 * 1000毫秒
+                }, this.settingUtils.get("Slider") * 1000 * 60); // 1分钟 = 60秒 * 1000毫秒
             } else {
                 clearTimeout(timer);
             }
@@ -98,9 +87,10 @@ export default class PluginSample extends Plugin {
 
                 if (this.settingUtils.get("mainSwitch") && this.settingUtils.get("monitorMouse")) {
                     this.lockSiyuan();
+                    this.sleep(1000);
                 }
 
-            }, this.settingUtils.get("Slider") * 1000);
+            }, this.settingUtils.get("Slider") * 1000 * 60);
         });
 
         document.addEventListener("mouseover", () => {
@@ -111,30 +101,45 @@ export default class PluginSample extends Plugin {
     }
 
 
+
+
+
+
+
     async lockSiyuan() {
+        console.log("try to lock");
         var mainMenuButton = document.getElementById("barWorkspace");
-        var buttonElements = document.querySelectorAll('.b3-menu__item');
 
-
-        //click main menu icon
+        // main menu
         if (mainMenuButton) {
             mainMenuButton.click();
-            await this.sleep(1000);
+            await this.sleep(300);
         } else {
             console.log("未找到按钮元素");
             return;
         }
 
+        await this.sleep(100);
 
-        //click
-        var targetButton;
-        buttonElements.forEach(function (button) {
-            var labelElement = button.querySelector('.b3-menu__label');
-            if (labelElement && labelElement.textContent.trim() === '锁屏') {
-                targetButton = button;
-            }
-        });
 
+        function findTargetButton(elements) {
+            var targetButton = null;
+            elements.forEach(function (button) {
+                var labelElement = button.querySelector('.b3-menu__label');
+                if (labelElement && labelElement.textContent.trim() === '锁屏') {
+                    targetButton = button;
+                } else {
+                    var submenu = button.querySelector('.b3-menu__submenu');
+                    if (submenu) {
+                        // submenu exists 递归
+                        targetButton = findTargetButton(submenu.querySelectorAll('.b3-menu__item'));
+                    }
+                }
+            });
+            return targetButton;
+        }
+
+        var targetButton = findTargetButton(document.querySelectorAll('.b3-menu__item'));
 
         if (targetButton) {
             targetButton.click();
@@ -143,7 +148,9 @@ export default class PluginSample extends Plugin {
         }
     }
 
-    // 辅助函数，用于等待指定的毫秒数
+
+
+
     sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
@@ -152,7 +159,7 @@ export default class PluginSample extends Plugin {
 
     async onunload() {
         await this.settingUtils.save();
-        showMessage("Goodbye SiYuan Plugin");
+        showMessage("Uninstalled siyuan_leave_to_lock");
     }
 
 
