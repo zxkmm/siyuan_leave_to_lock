@@ -10,7 +10,7 @@ import { SettingUtils } from "./libs/setting-utils";
 
 const STORAGE_NAME = "menu-config";
 
-export default class PluginSample extends Plugin {
+export default class siyuan_leave_to_lock extends Plugin {
 
     private settingUtils: SettingUtils;
 

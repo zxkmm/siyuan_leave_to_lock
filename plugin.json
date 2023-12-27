@@ -2,7 +2,7 @@
   "name": "siyuan_leave_to_lock",
   "author": "zxkmm",
   "url": "https://github.com/siyuan-note/plugin-sample-vite-svelte",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "minAppVersion": "2.10.14",
   "backends": [
     "windows",
