@@ -7,6 +7,7 @@
  * @Description  : A utility for siyuan plugin settings
  */
 
+import { it } from 'node:test';
 import { Plugin, Setting } from 'siyuan';
 
 export class SettingUtils {
@@ -67,6 +68,14 @@ export class SettingUtils {
         return this.settings.get(key)?.value;
     }
 
+    async assignValue(_key_: string, _value_: any) {
+        let item = this.settings.get(_key_);
+        item.value = _value_;
+        this.plugin.data[this.name] = item.value;
+        await this.save();
+        window.location.reload();
+    }
+
     /**
      * 将设置项目导出为 JSON 对象
      * @returns object
@@ -79,6 +88,7 @@ export class SettingUtils {
         }
         return data;
     }
+    
 
     addItem(item: ISettingItem) {
         this.settings.set(item.key, item);
