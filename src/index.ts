@@ -1,6 +1,5 @@
 import {
-    Plugin,
-    showMessage,
+    Plugin
 } from "siyuan";
 import "@/index.scss";
 
@@ -20,8 +19,6 @@ export default class siyuan_leave_to_lock extends Plugin {
         this.settingUtils = new SettingUtils(this, STORAGE_NAME);
 
         this.settingUtils.load();
-
-        // console.log(await this.currentDeviceInList()); //DBG
 
         this.settingUtils.addItem({
             key: "mainSwitch",
@@ -103,64 +100,68 @@ export default class siyuan_leave_to_lock extends Plugin {
                 }
             }
         });
-        
+
     }
+
 
 
     onLayoutReady() {
-
         this.loadData(STORAGE_NAME);
         this.settingUtils.load();
 
+        const layoutReadyAsyncHandler = async () => {
 
 
+            /*条件列表：
+            当前设备真， 仅允许开关开，后半段为假 ：真||假： 执行
+            当前设备真， 仅允许开关关，后半段为真 ：真||真： 执行
+            当前设备假， 仅允许开关开，后半段为假 ：假||假： 不执行
+            当前设备假， 仅允许开关关，后半段为真 ：假||真： 执行
+            */
 
 
-        /*条件列表：
-        当前设备真， 仅允许开关开，后半段为假 ：真||假： 执行
-        当前设备真， 仅允许开关关，后半段为真 ：真||真： 执行
-        当前设备假， 仅允许开关开，后半段为假 ：假||假： 不执行
-        当前设备假， 仅允许开关关，后半段为真 ：假||真： 执行
-        */ 
-        if (this.currentDeviceInList || !this.settingUtils.get("onlyEnableListedDevices")) {
-            console.log("enter condition");
+            try {
+                if ( (await this.currentDeviceInList() || !this.settingUtils.get("onlyEnableListedDevices")) && this.settingUtils.get("mainSwitch")) {
+                    console.log("siyuan_leave_to_lock: device ifEnable condition entered"); //DBG
 
-            let timer;
+                    let timer;
 
-            document.addEventListener("visibilitychange", () => {
-                if (document.hidden) {
-                    timer = setTimeout(() => {
-                        if (this.settingUtils.get("mainSwitch") && this.settingUtils.get("monitorVisibility")) {
-                            this.lockSiyuan();
-                            this.sleep(1000);
+                    document.addEventListener("visibilitychange", () => {
+                        if (document.hidden) {
+                            timer = setTimeout(() => {
+                                if (this.settingUtils.get("mainSwitch") && this.settingUtils.get("monitorVisibility")) {
+                                    this.lockSiyuan();
+                                    this.sleep(1000);
+                                }
+                            }, this.settingUtils.get("Slider") * 1000 * 60);
+                        } else {
+                            clearTimeout(timer);
                         }
+                    });
 
+                    document.addEventListener("mouseout", () => {
+                        timer = setTimeout(() => {
+                            if (this.settingUtils.get("mainSwitch") && this.settingUtils.get("monitorMouse")) {
+                                this.lockSiyuan();
+                                this.sleep(1000);
+                            }
+                        }, this.settingUtils.get("Slider") * 1000 * 60);
+                    });
 
-                    }, this.settingUtils.get("Slider") * 1000 * 60); // 1分钟 = 60秒 * 1000毫秒
-                } else {
-                    clearTimeout(timer);
+                    document.addEventListener("mouseover", () => {
+                        clearTimeout(timer);
+                    });
                 }
-            });
+            } catch (error) {
+                console.error("sy_leave_to_lock: failed loading device ifEnable condition", error);
+            }
+        };
 
-            document.addEventListener("mouseout", () => {
-                timer = setTimeout(() => {
-
-                    if (this.settingUtils.get("mainSwitch") && this.settingUtils.get("monitorMouse")) {
-                        this.lockSiyuan();
-                        this.sleep(1000);
-                    }
-
-                }, this.settingUtils.get("Slider") * 1000 * 60);
-            });
-
-            document.addEventListener("mouseover", () => {
-                clearTimeout(timer);
-            });
-        }
-
+        layoutReadyAsyncHandler();
     }
 
-    
+
+
 
 
 
@@ -224,43 +225,43 @@ export default class siyuan_leave_to_lock extends Plugin {
     async currentDeviceInList() {
         try {
             var current_device_info = await this.fetchCurrentDeviceInfo();
-    
+
             var enableDeviceList = await this.settingUtils.get("enableDeviceList");
             var enableDeviceListArray = enableDeviceList.split("\n");
-    
+
             return enableDeviceListArray.includes(current_device_info);
         } catch (error) {
             console.error("Error checking if current device is enabled:", error);
         }
     }
-    
+
 
     fetchCurrentDeviceInfo(): Promise<string> {
         var current_device_uuid = window.siyuan.config.system.id;
         var current_device_name = window.siyuan.config.system.name;
         var current_device_info = current_device_uuid + " " + current_device_name;
-    
+
         return Promise.resolve(current_device_info.toString());
     }
-    
+
 
     async appendCurrentDeviceIntoList() {
         try {
             // await!!!!!
             var current_device_info = await this.fetchCurrentDeviceInfo();
-    
+
             var enableDeviceList = this.settingUtils.get("enableDeviceList");
             var enableDeviceListArray = enableDeviceList.split("\n");
             var enableDeviceListArrayLength = enableDeviceListArray.length;
             var enableDeviceListArrayLast = enableDeviceListArray[enableDeviceListArrayLength - 1];
-    
+
             // remove empty line
             if (enableDeviceListArrayLast === "") {
                 enableDeviceListArray.pop();
             }
-    
+
             enableDeviceListArray.push(current_device_info);
-    
+
             var enableDeviceListArrayString = enableDeviceListArray.join("\n");
 
             this.settingUtils.assignValue("enableDeviceList", enableDeviceListArrayString);
@@ -269,7 +270,7 @@ export default class siyuan_leave_to_lock extends Plugin {
             console.error("Error appending current device into list:", error);
         }
     }
-    
+
 
 
     async removeCurrentDeviceFromList() {
