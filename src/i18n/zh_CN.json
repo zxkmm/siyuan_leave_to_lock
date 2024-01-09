@@ -13,5 +13,10 @@
     "addCurrentDeviceIntoListLabel":"添加",
     "removeCurrentDeviceFromList":"移除当前设备",
     "removeCurrentDeviceFromListDesc":"把当前设备从表中移除",
-    "removeCurrentDeviceFromListLabel":"移除"
+    "removeCurrentDeviceFromListLabel":"移除",
+    "lockImplementation":"锁屏实现",
+    "lockImplementationDesc":"选择锁屏实现方式(若版本支持，推荐使用API)",
+    "simulateClick":"模拟点击",
+    "simulateClickText":"模拟点击的按钮文字",
+    "simulateClickTextDesc":"仅当锁屏实现选项选择模拟点击时有效"
 }

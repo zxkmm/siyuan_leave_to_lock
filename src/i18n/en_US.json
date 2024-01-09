@@ -13,5 +13,10 @@
     "addCurrentDeviceIntoListLabel": "Add",
     "removeCurrentDeviceFromList": "Remove Current Device from List",
     "removeCurrentDeviceFromListDesc": "Remove the current device from the table.",
-    "removeCurrentDeviceFromListLabel": "Remove"
+    "removeCurrentDeviceFromListLabel": "Remove",
+    "lockImplementation":"Lock Screen Implementation",
+    "lockImplementationDesc":"If app version supports, API is recommended. If not, use simulate click.",
+    "simulateClick":"Simulate Click",
+    "simulateClickText":"Simulate Click Button Text",
+    "simulateClickTextDesc":"Only valid when you use simulate click option above."
 }

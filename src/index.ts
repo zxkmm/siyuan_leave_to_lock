@@ -1,5 +1,6 @@
 import {
-    Plugin
+    Plugin,
+    lockScreen
 } from "siyuan";
 import "@/index.scss";
 
@@ -58,6 +59,26 @@ export default class siyuan_leave_to_lock extends Plugin {
         });
 
         this.settingUtils.addItem({
+            key: "lockImplementation",
+            value: 1,
+            type: "select",
+            title: this.i18n.lockImplementation,
+            description: this.i18n.lockImplementationDesc,
+            options: {
+                1: "API",
+                2: this.i18n.simulateClick,
+            }
+        });
+
+        this.settingUtils.addItem({
+            key: "simulateClickText",
+            value: "锁屏",
+            type: "textinput",
+            title: this.i18n.simulateClickText,
+            description: this.i18n.simulateClickTextDesc,
+        });
+
+        this.settingUtils.addItem({
             key: "onlyEnableListedDevices",
             value: false,
             type: "checkbox",
@@ -101,6 +122,8 @@ export default class siyuan_leave_to_lock extends Plugin {
             }
         });
 
+
+
     }
 
 
@@ -122,7 +145,7 @@ export default class siyuan_leave_to_lock extends Plugin {
 
             try {
                 if ( (await this.currentDeviceInList() || !this.settingUtils.get("onlyEnableListedDevices")) && this.settingUtils.get("mainSwitch")) {
-                    console.log("siyuan_leave_to_lock: device ifEnable condition entered"); //DBG
+                    // console.log("siyuan_leave_to_lock: device ifEnable condition entered"); //DBG
 
                     let timer;
 
@@ -130,7 +153,19 @@ export default class siyuan_leave_to_lock extends Plugin {
                         if (document.hidden) {
                             timer = setTimeout(() => {
                                 if (this.settingUtils.get("mainSwitch") && this.settingUtils.get("monitorVisibility")) {
-                                    this.lockSiyuan();
+
+
+                                    if (this.settingUtils.get("lockImplementation") == 1) {
+                                        // console.log("condition,1,1"); //DBG
+                                        this.lock_screen_with_api();
+                                    } else if (this.settingUtils.get("lockImplementation") == 2) {
+                                        // console.log("condition,1,2"); //DBG
+                                        this.lock_screen_with_simulate_click();
+                                    } else {
+                                        // console.log("condition,1,3"); //DBG
+                                        this.lock_screen_with_api();
+                                    }
+
                                     this.sleep(1000);
                                 }
                             }, this.settingUtils.get("Slider") * 1000 * 60);
@@ -142,7 +177,16 @@ export default class siyuan_leave_to_lock extends Plugin {
                     document.addEventListener("mouseout", () => {
                         timer = setTimeout(() => {
                             if (this.settingUtils.get("mainSwitch") && this.settingUtils.get("monitorMouse")) {
-                                this.lockSiyuan();
+                                if (this.settingUtils.get("lockImplementation") == 1) {
+                                    this.lock_screen_with_api();
+                                    // console.log("condition,2,1"); //DBG
+                                } else if (this.settingUtils.get("lockImplementation") == 2) {
+                                    // console.log("condition,2,2"); //DBG
+                                    this.lock_screen_with_simulate_click();
+                                } else {
+                                    this.lock_screen_with_api();
+                                    // console.log("condition,2,3"); //DBG
+                                }
                                 this.sleep(1000);
                             }
                         }, this.settingUtils.get("Slider") * 1000 * 60);
@@ -161,12 +205,15 @@ export default class siyuan_leave_to_lock extends Plugin {
     }
 
 
+    lock_screen_with_api(){
+        lockScreen(this.app);
+    }
 
 
 
-
-    async lockSiyuan() {
-        console.log("try to lock");
+    async lock_screen_with_simulate_click() {
+        var user_defined_simulate_click_text = this.settingUtils.get("simulateClickText");
+        // console.log("try to lock"); //DBG
         var mainMenuButton = document.getElementById("barWorkspace");
 
         // main menu
@@ -174,7 +221,7 @@ export default class siyuan_leave_to_lock extends Plugin {
             mainMenuButton.click();
             await this.sleep(300);
         } else {
-            console.log("未找到按钮元素");
+            console.log("siyuan_leave_to_lock: cant find the main menu button");
             return;
         }
 
@@ -185,7 +232,7 @@ export default class siyuan_leave_to_lock extends Plugin {
             var targetButton = null;
             elements.forEach(function (button) {
                 var labelElement = button.querySelector('.b3-menu__label');
-                if (labelElement && labelElement.textContent.trim() === '锁屏') {
+                if (labelElement && labelElement.textContent.trim() == user_defined_simulate_click_text) {
                     targetButton = button;
                 } else {
                     var submenu = button.querySelector('.b3-menu__submenu');
@@ -203,7 +250,7 @@ export default class siyuan_leave_to_lock extends Plugin {
         if (targetButton) {
             targetButton.click();
         } else {
-            console.error('找不到包含 "锁屏" 文本的按钮');
+            console.error('siyuan_leave_to_lock: cant find the text you defined');
         }
     }
 
