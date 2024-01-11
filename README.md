@@ -6,7 +6,7 @@ To avoid the possibility of being unable to unlock the loop screen due to system
 If you unfortunately remain locked, go to the workspace and delete the entire `siyuan_leave_to_lock` folder. Also, refrain from using it in operating systems or environments like iOS and Docker, where editing workspace files is difficult or impossible.
 
 # Note
-Please star my GitHub repository if you like this plugin. [https://github.com/zxkmm/siyuan_leave_to_lock](https://github.com/zxkmm/siyuan_leave_to_lock)
+Please star⭐ my GitHub repository if you like this plugin. [https://github.com/zxkmm/siyuan_leave_to_lock](https://github.com/zxkmm/siyuan_leave_to_lock)
 
 # Credits   
 [Frostime](https://github.com/frostime)   ([b3log](https://ld246.com/member/Frostime))   
