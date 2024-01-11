@@ -122,6 +122,13 @@ export default class siyuan_leave_to_lock extends Plugin {
             }
         });
 
+        this.settingUtils.addItem({
+            key: "hint",
+            value: "",
+            type: "hint",
+            title: this.i18n.hintTitle,
+            description: this.i18n.hintDesc,
+        });
 
 
     }
@@ -144,7 +151,7 @@ export default class siyuan_leave_to_lock extends Plugin {
 
 
             try {
-                if ( (await this.currentDeviceInList() || !this.settingUtils.get("onlyEnableListedDevices")) && this.settingUtils.get("mainSwitch")) {
+                if ((await this.currentDeviceInList() || !this.settingUtils.get("onlyEnableListedDevices")) && this.settingUtils.get("mainSwitch")) {
                     // console.log("siyuan_leave_to_lock: device ifEnable condition entered"); //DBG
 
                     let timer;
@@ -205,7 +212,7 @@ export default class siyuan_leave_to_lock extends Plugin {
     }
 
 
-    lock_screen_with_api(){
+    lock_screen_with_api() {
         lockScreen(this.app);
     }
 
