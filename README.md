@@ -1,6 +1,11 @@
 # Siyuan Locks When You Leave
 Automatically lock SiYuan when you leave the Siyuan Note. Multiple monitoring modes and custom delays can be configured.
 
+# changelog
+ ## 0.2.1
+  - seperate the two monitor methods' delay
+  - decrease minimum delay to a better value
+
 # Precautions
 To avoid the possibility of being unable to unlock the loop screen due to system incompatibility or Electron bugs, please try in a new workspace first. Ensure that your system supports this plugin.
 If you unfortunately remain locked, go to the workspace and delete the entire `siyuan_leave_to_lock` folder. Also, refrain from using it in operating systems or environments like iOS and Docker, where editing workspace files is difficult or impossible.

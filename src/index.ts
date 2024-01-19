@@ -9,6 +9,7 @@ import "@/index.scss";
 import { SettingUtils } from "./libs/setting-utils";
 
 const STORAGE_NAME = "menu-config";
+var minLockDelay = 0.5; // minutes
 
 export default class siyuan_leave_to_lock extends Plugin {
 
@@ -55,6 +56,19 @@ export default class siyuan_leave_to_lock extends Plugin {
                 min: 0.5,
                 max: 120,
                 step: 0.5,
+            }
+        });
+
+        this.settingUtils.addItem({
+            key: "visibilityDelay",
+            value: 50,
+            type: "slider",
+            title: this.i18n.visibilityDelay,
+            description: this.i18n.timeUnit,
+            slider: {
+                min: 0,
+                max: 120,
+                step: 0.1,
             }
         });
 
@@ -151,6 +165,9 @@ export default class siyuan_leave_to_lock extends Plugin {
 
 
             try {
+
+                const _visibilityDelay_ = this.settingUtils.get("visibilityDelay") * 1000 * 60;
+                const _mouseOverDelay_ = this.settingUtils.get("Slider") * 1000 * 60;
                 if ((await this.currentDeviceInList() || !this.settingUtils.get("onlyEnableListedDevices")) && this.settingUtils.get("mainSwitch")) {
                     // console.log("siyuan_leave_to_lock: device ifEnable condition entered"); //DBG
 
@@ -163,19 +180,19 @@ export default class siyuan_leave_to_lock extends Plugin {
 
 
                                     if (this.settingUtils.get("lockImplementation") == 1) {
-                                        // console.log("condition,1,1"); //DBG
+                                        console.log("condition,1,1"); //DBG
                                         this.lock_screen_with_api();
                                     } else if (this.settingUtils.get("lockImplementation") == 2) {
-                                        // console.log("condition,1,2"); //DBG
+                                        console.log("condition,1,2"); //DBG
                                         this.lock_screen_with_simulate_click();
                                     } else {
-                                        // console.log("condition,1,3"); //DBG
+                                        console.log("condition,1,3"); //DBG
                                         this.lock_screen_with_api();
                                     }
 
                                     this.sleep(1000);
                                 }
-                            }, this.settingUtils.get("Slider") * 1000 * 60);
+                            }, _visibilityDelay_);
                         } else {
                             clearTimeout(timer);
                         }
@@ -196,7 +213,7 @@ export default class siyuan_leave_to_lock extends Plugin {
                                 }
                                 this.sleep(1000);
                             }
-                        }, this.settingUtils.get("Slider") * 1000 * 60);
+                        }, _mouseOverDelay_);
                     });
 
                     document.addEventListener("mouseover", () => {

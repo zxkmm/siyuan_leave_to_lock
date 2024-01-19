@@ -2,7 +2,8 @@
   "mainSwitch": "Main Switch",
   "monitorVisibility": "Monitor SiYuan Window Visibility (Minimized)",
   "monitorMouse": "Monitor Mouse Inside SiYuan Window",
-  "timeout": "Lock Delay",
+  "timeout": "Locking delay of mouse over monitor",
+  "visibilityDelay": "Locking delay of Visibility monitor",
   "timeUnit": "Minutes",
   "onlyEnableListedDevices": "Enable Only on Listed Devices",
   "onlyEnableListedDevicesDesc": "When the switch is on, this plugin enabled only on the devices listed in the list. When the switch is off, this plugin enabled on all devices.",
@@ -19,6 +20,8 @@
   "simulateClick": "Simulate Click",
   "simulateClickText": "Simulate Click Button Text",
   "simulateClickTextDesc": "Only valid when you use simulate click option above.",
+  "dangerousModeDesc" : "Allow shorter delay. <br>This mode is dangerous. Please use it with caution.",
+  "dangerousMode": "Dangerous Mode",
   "hintTitle": "About",
   "hintDesc": "<ul><li>● By <a href='https://github.com/zxkmm'>zxkmm</a> and open source under the MIT license.</li><li>● Please star⭐ my GitHub repository if you like this plugin.</li><li>● Link: <a href='https://github.com/zxkmm/siyuan_leave_to_lock'>https://github.com/zxkmm/siyuan_leave_to_lock</a></li></ul>"
 }
