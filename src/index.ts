@@ -289,7 +289,7 @@ export default class siyuan_leave_to_lock extends Plugin {
 
     async onunload() {
         await this.settingUtils.save();
-        window.location.reload();
+        // window.location.reload();
     }
 
 
