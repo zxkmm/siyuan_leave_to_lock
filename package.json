@@ -1,6 +1,6 @@
 {
   "name": "siyuan_leave_to_lock",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "type": "module",
   "description": "Lock SiYuan when you leave",
   "repository": "https://github.com/zxkmm/siyuan_leave_to_lock",
